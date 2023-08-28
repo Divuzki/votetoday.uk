@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
-    <title>Vote Now</title>
+    <title>VoteNow</title>
   </head>
   <body class="w-full flex flex-col items-center h-screen">
     <header class="w-full flex fixed">
@@ -24,6 +24,42 @@
       class="w-full justify-center h-full flex flex-col items-center mt-16 bg-gray-100"
     >
       {% block content %} {% endblock content %}
+
+      <!-- django messages -->
+      {% if messages %}
+      <div
+        class="flex flex-col justify-center slide-up translate-y-32 items-center w-full fixed bottom-5 gap-2"
+      >
+        {% for message in messages %}
+        <div
+          class="flex gap-4 justify-between items-center bg-white border {% if message.tags == 'success' %} border-emerald-500 {% elif message.tags == 'error' %} border-red-500 {% endif %} rounded-3xl shadow-md p-4"
+        >
+          <span
+            class="text-sm font-semibold {% if message.tags == 'success' %} text-slate-500 {% elif message.tags == 'error' %} text-red-500 {% endif %}"
+            >{{ message }}</span
+          >
+          <button
+            class="text-sm font-semibold text-slate-500 px-2 transition-all active:scale-75 py-1 rounded-full bg-gray-200 hover:bg-gray-300 hover:text-red-500"
+            onclick="this.parentElement.remove()"
+          >
+            X
+          </button>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
     </main>
+    <style>
+      .slide-up {
+        animation: slide-up-down 20s ease-in-out;
+        animation-delay: 0.5s;
+      }
+
+      @keyframes slide-up-down {
+        1% {
+          transform: translateY(0);
+        }
+      }
+    </style>
   </body>
 </html>
