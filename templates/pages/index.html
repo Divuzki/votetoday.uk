@@ -6,18 +6,19 @@
     <h3 class="text-5xl font-semibold text-slate-700">
       Which poll would you like to take?
     </h3>
-    <div class="flex gap-4">
+    <div class="flex flex-wrap gap-2">
       <!-- Poll -->
       {% for poll in polls %}
-      <button
-        class="flex py-2 px-4 w-max transition-all active:scale-75 hover:scale-105 justify-center rounded-full bg-white group border hover:bg-gray-800"
+      <a
+      href="{% url 'poll' poll.slug %}"
+        class="flex border-none justify-center items-center py-2 px-4 w-max transition-all active:scale-75 hover:scale-105 rounded-full bg-white group border hover:bg-gray-800"
       >
         <span
           class="text-sm font-semibold text-slate-500 group-hover:text-white"
         >
             {{ poll.name }}
         </span>
-      </button>
+      </a>
       {% endfor %}
     </div>
   </div>
