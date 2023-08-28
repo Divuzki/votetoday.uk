@@ -1,6 +1,7 @@
 from django.shortcuts import render
-
+from .models import Poll, Candidate
 
 
 def index_view(request):
-    return render(request, 'index.html')
+    polls = Poll.objects.all()
+    return render(request, "pages/index.html", {"polls": polls})

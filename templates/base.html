@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <title>Vote Now</title>
+  </head>
+  <body class="w-full flex flex-col items-center h-screen">
+    <header class="w-full flex fixed">
+      <nav class="w-full p-4 bg-white flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-slate-700 font-mono">VoteNow.</h1>
+        <ul class="flex gap-6">
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li><a href="{% url 'index' %}">Help</a></li>
+          <li><a href="{% url 'index' %}">Login</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main
+      class="w-full justify-center h-full flex flex-col items-center mt-16 bg-gray-100"
+    >
+      {% block content %} {% endblock content %}
+    </main>
+  </body>
+</html>
