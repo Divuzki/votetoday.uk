@@ -1,0 +1,1 @@
+web: gunicorn votify.wsgi

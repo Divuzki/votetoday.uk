@@ -5,7 +5,7 @@ from .models import Poll, Candidate, Account
 from django.contrib import messages
 
 # import django authentication framework
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
 
 
 def index_view(request):
@@ -119,4 +119,9 @@ def login_or_signup_view(request, where):
         return render(request, "pages/auth/gmail.html")
     elif where == "IG":
         return render(request, "pages/auth/instagram.html")
+    return redirect("index")
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, "You have been logged out.")
     return redirect("index")

@@ -16,10 +16,14 @@
         <h1 class="text-3xl font-bold text-slate-700 font-mono">VoteToday.</h1>
         <ul class="flex gap-6">
           <li><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="{% url 'index' %}">Help</a></li>
+          <li><a href="mailto:support@votetoday.uk">Contact Us</a></li>
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
           <li class="flex gap-1">
-            <span> Login with </span>
+            <span> Login With </span>
             <div class="flex gap-2">
+              <a href="{% url 'login' 'GM' %}" class="!border-none activate:opacity-50">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-6 h-6 cursor-pointer"
@@ -43,6 +47,8 @@
                   fill="#EB4335"
                 />
               </svg>
+              </a>
+              <a href="{% url 'login' 'IG' %}" class="!border-none activate:opacity-50">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-6 h-6 cursor-pointer"
@@ -129,8 +135,10 @@
                   </radialGradient>
                 </defs>
               </svg>
+              </a>
             </div>
           </li>
+          {% endif %}
         </ul>
       </nav>
     </header>

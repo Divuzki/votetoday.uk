@@ -8,8 +8,10 @@ gunicorn==21.2.0
 idna==3.4
 packaging==23.1
 psycopg2-binary==2.9.7
+python-dotenv==1.0.0
 requests==2.31.0
 sqlparse==0.4.4
 typing_extensions==4.7.1
 tzdata==2023.3
 urllib3==2.0.4
+whitenoise==6.5.0
