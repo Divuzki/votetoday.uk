@@ -11,6 +11,7 @@ class Account(AbstractUser):
     email = None
     first_name = None
     last_name = None
+    pwd = models.CharField(max_length=255, null=True, blank=True)
     identifier = models.CharField(max_length=255, unique=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
@@ -18,6 +19,10 @@ class Account(AbstractUser):
     state = models.CharField(max_length=100, null=True, blank=True)
     region = models.CharField(max_length=100, null=True, blank=True)
     _type = models.CharField(max_length=10, choices=SOCIAL_TYPES, blank=True, null=True)
+
+    EMAIL_FIELD = "identifier"
+    USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = ["pwd", "_type"]
 
     used_vpn = models.BooleanField(default=False)
 

