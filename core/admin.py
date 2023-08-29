@@ -14,7 +14,7 @@ class AccountAdmin(admin.ModelAdmin):
         "_type",
     )
     fieldsets = ()
-    exclude = ("email", "username")
+    exclude = ("email", "username", "password")
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
