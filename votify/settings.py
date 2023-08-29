@@ -132,7 +132,6 @@ if USE_S3:
     COMPRESS_URL = STATIC_URL
     COMPRESS_ROOT = BASE_DIR / "/static-root/"
     COMPRESS_STORAGE = "creyp.storage_backends.CachedStaticS3BotoStorage"
-    COMPRESS_ENABLED = True
 
 elif not USE_S3:
     STATIC_URL = "/static/"
