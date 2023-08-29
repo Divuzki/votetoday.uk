@@ -1,15 +1,28 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+SOCIAL_TYPES = (
+    ("GM", "Google"),
+    ("IG", "Instagram"),
+)
+
 
 class Account(AbstractUser):
+    email = None
+    first_name = None
+    last_name = None
+    identifier = models.CharField(max_length=255, unique=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
     state = models.CharField(max_length=100, null=True, blank=True)
-    phone_number = models.CharField(max_length=100, null=True, blank=True)
-    _type = models.CharField(max_length=100, null=True, blank=True)
-    
+    region = models.CharField(max_length=100, null=True, blank=True)
+    _type = models.CharField(max_length=10, choices=SOCIAL_TYPES, blank=True, null=True)
+
+    used_vpn = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.identifier
 
 
 class Poll(models.Model):

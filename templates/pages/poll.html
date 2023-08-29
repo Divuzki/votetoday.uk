@@ -3,16 +3,23 @@
   <div
     class="flex flex-col gap-4 md:w-[60%] w-full px-4 py-2 justify-center rounded-lg"
   >
-    <h3 class="text-5xl font-semibold text-slate-700">{{ poll.desc }}</h3>
+    <h3 class="text-5xl font-semibold text-slate-700">
+      {% if voted_for %} 
+      You already voted for <b>{{ voted_for.name }}</b>
+      </h3>
+       {% else %} {{ poll.desc }}
+       </h3>
     <span class="text-sm font-semibold text-slate-500">
       (Select one option)
     </span>
+        {% endif %}
+    
     <div class="flex flex-wrap gap-2">
       <!-- Candidate -->
       {% for candidate in candidates %}
       <a
-        href="{% url 'vote' poll.slug candidate.id %}"
-        class="border-none flex py-2 px-4 w-max transition-all active:scale-75 hover:scale-105 justify-center items-center gap-2 rounded-full bg-white group border hover:bg-gray-800"
+        href="{% if voted_for %}{% if candidate == voted_for %}{% url 'vote' poll.slug candidate.id %}{% else %}#404{% endif %}{% else %}{% url 'vote' poll.slug candidate.id %}{% endif %}"
+        class="border-none {% if voted_for and not candidate == voted_for %}opacity-50 pointer-events-none{% endif %} flex py-2 px-4 w-max transition-all active:scale-75 hover:scale-105 justify-center items-center gap-2 rounded-full bg-white group border hover:bg-gray-800"
       >
         <figure class="w-10 h-10">
           <img
@@ -26,12 +33,14 @@
         >
           {{ candidate.name }}
         </span>
+        {% if candidate == voted_for %}
         <!-- vote count -->
         <span
           class="text-xs font-semibold text-slate-500 py-1 px-2 rouned bg-[#f5f5f5] group-hover:text-slate-700"
         >
           {{ candidate.votes|format_number }}
         </span>
+        {% endif %}
       </a>
       {% endfor %}
     </div>

