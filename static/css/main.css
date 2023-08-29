@@ -17,4 +17,8 @@ a {
 
 a:hover {
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.6666666667);
+}
+
+.divide-x {
+  border-right: 0.5px solid rgba(0, 0, 0, 0.6666666667);
 }/*# sourceMappingURL=main.css.map */

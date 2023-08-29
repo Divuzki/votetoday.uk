@@ -20,6 +20,7 @@ SECRET_KEY = os.getenv(
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "True") == "True"
+USE_S3 = os.getenv("USE_S3", "False") == "True"
 
 ALLOWED_HOSTS = ["*"]
 
@@ -113,7 +114,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-USE_S3 = os.getenv("USE_S3", "True") == "False"
 
 if USE_S3:
     # aws settings
