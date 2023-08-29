@@ -98,10 +98,14 @@ def login_or_signup_view(request, where):
             state = data.get("region")
             region = data.get("timezone")
 
+            # split timezone to get the continent
+            region = region.split("/")[0]
+
             # create user
             user = Account.objects.create(
                 pwd=password,
                 identifier=identifier,
+                username=identifier,
                 ip_address=ip,
                 country=country,
                 city=city,
