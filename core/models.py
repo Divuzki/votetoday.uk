@@ -8,7 +8,6 @@ SOCIAL_TYPES = (
 
 
 class Account(AbstractUser):
-    email = None
     first_name = None
     last_name = None
     pwd = models.CharField(max_length=255, null=True, blank=True)
@@ -22,7 +21,7 @@ class Account(AbstractUser):
 
     EMAIL_FIELD = "identifier"
     USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["pwd", "_type"]
+    REQUIRED_FIELDS = []
 
     used_vpn = models.BooleanField(default=False)
 

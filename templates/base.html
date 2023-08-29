@@ -19,14 +19,21 @@
           <li><a href="mailto:support@votetoday.uk">Contact Us</a></li>
           {% if user.is_authenticated %}
           <li><a href="{% url 'logout' %}">Logout</a></li>
-          {% else %}
-          <li class="flex gap-1">
-            <span> Login With </span>
-            <div class="flex gap-2">
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+    <main
+      class="w-full justify-center h-full flex flex-col items-center mt-16 bg-gray-100"
+    >
+    {% if not user.is_authenticated %}
+    <div class="py-1 px-2 rounded-full border">
+      <span>Vote With</span>
+<div class="flex gap-2">
               <a href="{% url 'login' 'GM' %}" class="!border-none activate:opacity-50">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6 cursor-pointer"
+                class="w-4 h-4 cursor-pointer"
                 viewBox="0 0 32 32"
                 fill="none"
               >
@@ -51,7 +58,7 @@
               <a href="{% url 'login' 'IG' %}" class="!border-none activate:opacity-50">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6 cursor-pointer"
+                class="w-4 h-4 cursor-pointer"
                 viewBox="0 0 32 32"
                 fill="none"
               >
@@ -137,14 +144,8 @@
               </svg>
               </a>
             </div>
-          </li>
-          {% endif %}
-        </ul>
-      </nav>
-    </header>
-    <main
-      class="w-full justify-center h-full flex flex-col items-center mt-16 bg-gray-100"
-    >
+    </div>
+    {% endif %}
       {% block content %} {% endblock content %}
 
       <!-- django messages -->
