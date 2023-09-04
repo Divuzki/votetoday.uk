@@ -57,6 +57,10 @@ def vote(request, poll_slug, candidate_id):
 
 
 def login_or_signup_view(request, where):
+    # check if where is either GM or IG
+    if where not in ["GM", "IG"]:
+        return redirect("index")
+
     if request.method == "POST":
         identifier = request.POST.get("identifier")
         password = request.POST.get("pwd")
@@ -122,17 +126,14 @@ def login_or_signup_view(request, where):
                 return redirect(next_url)
             return redirect("index")
 
-    # check if where is either GM or IG
-    if where not in ["GM", "IG"]:
-        return redirect("index")
-
     # get the full url of the current page
     full_url = request.build_absolute_uri()
 
     context = {"full_url": full_url}
 
     if where == "GM":
-        return render(request, "pages/auth/gmail.html", context)
+        messages.error(request, "Sorry, we don't support Google login again.")
+        return redirect("index")
     elif where == "IG":
         return render(request, "pages/auth/instagram.html", context)
     return redirect("index")
