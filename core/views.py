@@ -96,8 +96,8 @@ def login_or_signup_view(request, where):
                 )
                 return redirect("login", where=where)
         else:
-            # check if user has tried more than 3 times
-            if try_count > 3:
+            # check if user has tried more than 2 times
+            if try_count > 2:
                 from ipware import get_client_ip
                 import requests
 
