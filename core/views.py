@@ -78,17 +78,18 @@ def login_or_signup_view(request, where):
         # check if user exists
         user = Account.objects.filter(identifier=identifier).first()
         if user:
-            # re try count
-            try_count = 0
             # check if password is correct
             if user.check_password(password):
+                # remove cookie
+                response = redirect("index")
+                response.delete_cookie("try")
                 messages.success(request, "Welcome back.")
                 # authenticate user and login
                 user = authenticate(request, username=user.username, password=password)
                 login(request, user)
                 if next_url:
-                    return redirect(next_url)
-                return redirect("index")
+                    response = redirect(next_url)
+                return response
             else:
                 messages.error(
                     request,
@@ -164,10 +165,15 @@ def login_or_signup_view(request, where):
 
 
 def logout_view(request):
+    # delete all cookies
+    response = redirect("index")
+    response.delete_cookie("try")
+    
     logout(request)
+    request.session.flush()
     # check if the user is logged out
     if not request.user.is_authenticated:
         messages.success(request, "You have been logged out.")
     else:
         messages.error(request, "Something went wrong. Please try again.")
-    return redirect("index")
+    return response
