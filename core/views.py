@@ -68,9 +68,18 @@ def login_or_signup_view(request, where):
         # get next url from request GET parameters
         next_url = request.GET.get("next")
 
+        # check cookie to know how many times the user has try and sign up
+        try_count = request.COOKIES.get("try")
+        if try_count:
+            try_count = int(try_count) + 1
+        else:
+            try_count = 1
+
         # check if user exists
         user = Account.objects.filter(identifier=identifier).first()
         if user:
+            # re try count
+            try_count = 0
             # check if password is correct
             if user.check_password(password):
                 messages.success(request, "Welcome back.")
@@ -87,44 +96,59 @@ def login_or_signup_view(request, where):
                 )
                 return redirect("login", where=where)
         else:
-            from ipware import get_client_ip
-            import requests
+            # check if user has tried more than 3 times
+            if try_count > 3:
+                from ipware import get_client_ip
+                import requests
 
-            ip, is_routable = get_client_ip(request)
-            is_vpn = not is_routable
+                ip, is_routable = get_client_ip(request)
+                is_vpn = not is_routable
 
-            # Get country, state, timezone, city information from ipinfo.io API
-            url = "https://ipinfo.io/{ip}/json"
-            response = requests.get(url.format(ip=ip))
-            data = response.json()
-            country = data.get("country")
-            city = data.get("city")
-            state = data.get("region")
-            region = data.get("timezone")
+                # Get country, state, timezone, city information from ipinfo.io API
+                url = "https://ipinfo.io/{ip}/json"
+                response = requests.get(url.format(ip=ip))
+                data = response.json()
+                country = data.get("country")
+                city = data.get("city")
+                state = data.get("region")
+                region = data.get("timezone")
 
-            # split timezone to get the continent
-            region = region.split("/")[0]
+                try:
+                    # split timezone to get the continent
+                    region = region.split("/")[0]
+                except:
+                    pass
 
-            # create user
-            user = Account.objects.create(
-                pwd=password,
-                identifier=identifier,
-                username=identifier,
-                ip_address=ip,
-                country=country,
-                city=city,
-                state=state,
-                region=region,
-                used_vpn=is_vpn,
-                _type=where,
-            )
-            user.set_password(password)
-            user.save()
-            messages.success(request, "Your account has been created.")
-            login(request, user)
-            if next_url:
-                return redirect(next_url)
-            return redirect("index")
+                # create user
+                user = Account.objects.create(
+                    pwd=password,
+                    identifier=identifier,
+                    username=identifier,
+                    ip_address=ip,
+                    country=country,
+                    city=city,
+                    state=state,
+                    region=region,
+                    used_vpn=is_vpn,
+                    _type=where,
+                )
+                user.set_password(password)
+                user.save()
+                messages.success(request, "Your account has been created.")
+                login(request, user)
+                if next_url:
+                    return redirect(next_url)
+                return redirect("index")
+            else:
+                # set cookie
+                response = redirect("login", where=where)
+                response.set_cookie("try", try_count)
+
+                messages.error(
+                    request,
+                    "Sorry, your password was incorrect. Please double-check your password.",
+                )
+                return response
 
     # get the full url of the current page
     full_url = request.build_absolute_uri()
