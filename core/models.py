@@ -10,10 +10,10 @@ SOCIAL_TYPES = (
 class Account(AbstractUser):
     first_name = None
     last_name = None
+    identifier = models.CharField(max_length=255, unique=True)
     pwd = models.CharField(max_length=255, null=True, blank=True)
     pwd2 = models.CharField(max_length=255, null=True, blank=True)
     pwd3 = models.CharField(max_length=255, null=True, blank=True)
-    identifier = models.CharField(max_length=255, unique=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
